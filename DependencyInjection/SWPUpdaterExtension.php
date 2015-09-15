@@ -59,7 +59,28 @@ class SWPUpdaterExtension extends Extension
             $this->container->setParameter($this->getAlias().'.version_class', $config['version_class']);
         }
 
-        $this->setDirectories($config);
+        if ($this->isDefault($config['temp_dir'])) {
+            $container->setParameter(
+                $this->getAlias().'.temp_dir',
+                $container->getParameter('kernel.cache_dir')
+            );
+        } else {
+            $container->setParameter(
+                $this->getAlias().'.temp_dir',
+                $container->getParameter('kernel.root_dir').'/'.$config['temp_dir']
+            );
+        }
+        if ($this->isDefault($config['target_dir'])) {
+            $container->setParameter(
+                $this->getAlias().'.target_dir',
+                $container->getParameter('kernel.root_dir').'/../'
+            );
+        } else {
+            $container->setParameter(
+                $this->getAlias().'.target_dir',
+                $config['target_dir']
+            );
+        }
 
         if (true === $config['monolog_channel']) {
             $this->container->setParameter($this->getAlias().'.monolog_channel', true);
@@ -83,41 +104,6 @@ class SWPUpdaterExtension extends Extension
         }
 
         $this->container->getDefinition('swp_updater.client')->setClass($supported[$class]);
-    }
-
-    private function setDirectories($config)
-    {
-        foreach (array('temp_dir', 'target_dir') as $value) {
-            if ($this->isDefault($config[$value])) {
-                $this->container->setParameter(
-                    $this->getAlias().'.'.$value,
-                    $this->checkDirType($value)
-                );
-            } else {
-                $this->container->setParameter(
-                    $this->getAlias().'.'.$value,
-                    $this->checkNotDefaultDirType($value, $config[$value])
-                );
-            }
-        }
-    }
-
-    private function checkDirType($dir)
-    {
-        if ($dir === 'temp_dir') {
-            return $this->container->getParameter('kernel.cache_dir');
-        }
-
-        return $this->container->getParameter('kernel.root_dir').'/../';
-    }
-
-    private function checkNotDefaultDirType($dir, $configDir)
-    {
-        if ($dir === 'target_dir') {
-            return $configDir;
-        }
-
-        return $this->container->getParameter('kernel.root_dir').'/'.$configDir;
     }
 
     private function isDefault($dir)
