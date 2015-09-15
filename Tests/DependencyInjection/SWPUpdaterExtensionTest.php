@@ -22,8 +22,8 @@ class SWPUpdaterExtensionTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers SWP\UpdaterBundle\SWPUpdaterBundle
      * @covers SWP\UpdaterBundle\DependencyInjection\SWPUpdaterExtension::load
+     * @covers SWP\UpdaterBundle\DependencyInjection\SWPUpdaterExtension::isDefault
      * @covers SWP\UpdaterBundle\DependencyInjection\Configuration::getConfigTreeBuilder
-     * @covers SWP\UpdaterBundle\DependencyInjection\SWPUpdaterExtension::<private>
      */
     public function testLoad()
     {
@@ -55,7 +55,6 @@ class SWPUpdaterExtensionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers SWP\UpdaterBundle\DependencyInjection\SWPUpdaterExtension::load
-     * @covers SWP\UpdaterBundle\DependencyInjection\SWPUpdaterExtension::<private>
      */
     public function testLoadWhenTempDirAndTargetDirAreSet()
     {
@@ -82,9 +81,8 @@ class SWPUpdaterExtensionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers SWP\UpdaterBundle\DependencyInjection\SWPUpdaterExtension::load
-     * @covers SWP\UpdaterBundle\DependencyInjection\SWPUpdaterExtension::<private>
      */
-    public function testLoadIfMonologChannelDefined()
+    public function testLoadWhenMonologChannelIsSet()
     {
         $container = $this->createContainer();
         $loader = $this->createLoader();
@@ -130,7 +128,6 @@ class SWPUpdaterExtensionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers SWP\UpdaterBundle\DependencyInjection\SWPUpdaterExtension::load
-     * @covers SWP\UpdaterBundle\DependencyInjection\SWPUpdaterExtension::<private>
      * @expectedException \LogicException
      */
     public function testLoadWhenClientTypeIsNotSupported()
@@ -151,7 +148,6 @@ class SWPUpdaterExtensionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers SWP\UpdaterBundle\DependencyInjection\SWPUpdaterExtension::load
-     * @covers SWP\UpdaterBundle\DependencyInjection\SWPUpdaterExtension::<private>
      * @expectedException \LogicException
      */
     public function testLoadWhenGuzzleIsNotInstalledButUsed()
@@ -179,9 +175,8 @@ class SWPUpdaterExtensionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers SWP\UpdaterBundle\DependencyInjection\SWPUpdaterExtension::load
-     * @covers SWP\UpdaterBundle\DependencyInjection\SWPUpdaterExtension::<private>
      */
-    public function testLoadForDefaultClient()
+    public function testLoadWhenDefaultClientIsUsed()
     {
         $container = $this->createContainer();
         $loader = $this->createLoader();
