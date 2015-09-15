@@ -22,7 +22,6 @@ class SWPUpdaterExtensionTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers SWP\UpdaterBundle\SWPUpdaterBundle
      * @covers SWP\UpdaterBundle\DependencyInjection\SWPUpdaterExtension::load
-     * @covers SWP\UpdaterBundle\DependencyInjection\SWPUpdaterExtension::isDefault
      * @covers SWP\UpdaterBundle\DependencyInjection\Configuration::getConfigTreeBuilder
      */
     public function testLoad()
@@ -82,7 +81,7 @@ class SWPUpdaterExtensionTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers SWP\UpdaterBundle\DependencyInjection\SWPUpdaterExtension::load
      */
-    public function testLoadWhenMonologChannelIsSet()
+    public function testLoadIfMonologChannelDefined()
     {
         $container = $this->createContainer();
         $loader = $this->createLoader();
@@ -176,7 +175,7 @@ class SWPUpdaterExtensionTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers SWP\UpdaterBundle\DependencyInjection\SWPUpdaterExtension::load
      */
-    public function testLoadWhenDefaultClientIsUsed()
+    public function testLoadForDefaultClient()
     {
         $container = $this->createContainer();
         $loader = $this->createLoader();
