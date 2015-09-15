@@ -23,6 +23,7 @@ class SWPUpdaterExtensionTest extends \PHPUnit_Framework_TestCase
      * @covers SWP\UpdaterBundle\SWPUpdaterBundle
      * @covers SWP\UpdaterBundle\DependencyInjection\SWPUpdaterExtension::load
      * @covers SWP\UpdaterBundle\DependencyInjection\Configuration::getConfigTreeBuilder
+     * @covers SWP\UpdaterBundle\DependencyInjection\SWPUpdaterExtension::<private>
      */
     public function testLoad()
     {
@@ -54,6 +55,7 @@ class SWPUpdaterExtensionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers SWP\UpdaterBundle\DependencyInjection\SWPUpdaterExtension::load
+     * @covers SWP\UpdaterBundle\DependencyInjection\SWPUpdaterExtension::<private>
      */
     public function testLoadWhenTempDirAndTargetDirAreSet()
     {
@@ -80,6 +82,7 @@ class SWPUpdaterExtensionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers SWP\UpdaterBundle\DependencyInjection\SWPUpdaterExtension::load
+     * @covers SWP\UpdaterBundle\DependencyInjection\SWPUpdaterExtension::<private>
      */
     public function testLoadIfMonologChannelDefined()
     {
@@ -127,6 +130,7 @@ class SWPUpdaterExtensionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers SWP\UpdaterBundle\DependencyInjection\SWPUpdaterExtension::load
+     * @covers SWP\UpdaterBundle\DependencyInjection\SWPUpdaterExtension::<private>
      * @expectedException \LogicException
      */
     public function testLoadWhenClientTypeIsNotSupported()
@@ -147,6 +151,7 @@ class SWPUpdaterExtensionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers SWP\UpdaterBundle\DependencyInjection\SWPUpdaterExtension::load
+     * @covers SWP\UpdaterBundle\DependencyInjection\SWPUpdaterExtension::<private>
      * @expectedException \LogicException
      */
     public function testLoadWhenGuzzleIsNotInstalledButUsed()
@@ -174,6 +179,7 @@ class SWPUpdaterExtensionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers SWP\UpdaterBundle\DependencyInjection\SWPUpdaterExtension::load
+     * @covers SWP\UpdaterBundle\DependencyInjection\SWPUpdaterExtension::<private>
      */
     public function testLoadForDefaultClient()
     {
