@@ -25,70 +25,15 @@ use Symfony\Component\DependencyInjection\Loader;
  */
 class SWPUpdaterExtension extends Extension
 {
-    private $container;
-
     /**
      * {@inheritdoc}
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $this->container = $container;
         $config = $this->processConfiguration(new Configuration(), $configs);
-        $loader = new Loader\YamlFileLoader($this->container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
-        $this->checkAndSetSupportedClass($config);
-
-        $clientConfig = array();
-        if (!empty($config['client'])) {
-            foreach (array('base_uri') as $key) {
-                $clientConfig[$key] = $config['client'][$key];
-            }
-
-            $this->container->setParameter($this->getAlias().'.client', $clientConfig);
-        }
-
-        $options = array();
-        if ($this->container->hasParameter($this->getAlias().'.client.options')) {
-            $options = $this->container->getParameter($this->getAlias().'.client.options');
-        }
-
-        $this->container->setParameter($this->getAlias().'.client.options', $options);
-
-        if (!empty($config['version_class'])) {
-            $this->container->setParameter($this->getAlias().'.version_class', $config['version_class']);
-        }
-
-        if ($this->isDefault($config['temp_dir'])) {
-            $container->setParameter(
-                $this->getAlias().'.temp_dir',
-                $container->getParameter('kernel.cache_dir')
-            );
-        } else {
-            $container->setParameter(
-                $this->getAlias().'.temp_dir',
-                $container->getParameter('kernel.root_dir').'/'.$config['temp_dir']
-            );
-        }
-        if ($this->isDefault($config['target_dir'])) {
-            $container->setParameter(
-                $this->getAlias().'.target_dir',
-                $container->getParameter('kernel.root_dir').'/../'
-            );
-        } else {
-            $container->setParameter(
-                $this->getAlias().'.target_dir',
-                $config['target_dir']
-            );
-        }
-
-        if (true === $config['monolog_channel']) {
-            $this->container->setParameter($this->getAlias().'.monolog_channel', true);
-        }
-    }
-
-    private function checkAndSetSupportedClass(array $config)
-    {
         $supported = array(
             'default' => 'SWP\UpdaterBundle\Client\DefaultClient',
             'guzzle' => 'SWP\UpdaterBundle\Client\GuzzleClient',
@@ -103,7 +48,55 @@ class SWPUpdaterExtension extends Extension
             throw new \LogicException('guzzlehttp/guzzle needs to be installed in order to use guzzle client!');
         }
 
-        $this->container->getDefinition('swp_updater.client')->setClass($supported[$class]);
+        $container->getDefinition('swp_updater.client')->setClass($supported[$class]);
+
+        $clientConfig = array();
+        if (!empty($config['client'])) {
+            foreach (array('base_uri') as $key) {
+                $clientConfig[$key] = $config['client'][$key];
+            }
+
+            $container->setParameter($this->getAlias().'.client', $clientConfig);
+        }
+
+        $options = array();
+        if ($container->hasParameter($this->getAlias().'.client.options')) {
+            $options = $container->getParameter($this->getAlias().'.client.options');
+        }
+
+        $container->setParameter($this->getAlias().'.client.options', $options);
+
+        if (!empty($config['version_class'])) {
+            $container->setParameter($this->getAlias().'.version_class', $config['version_class']);
+        }
+
+        if ($this->isDefault($config['temp_dir'])) {
+            $container->setParameter(
+                $this->getAlias().'.temp_dir',
+                $container->getParameter('kernel.cache_dir')
+            );
+        } else {
+            $container->setParameter(
+                $this->getAlias().'.temp_dir',
+                $container->getParameter('kernel.root_dir').'/'.$config['temp_dir']
+            );
+        }
+
+        if ($this->isDefault($config['target_dir'])) {
+            $container->setParameter(
+                $this->getAlias().'.target_dir',
+                $container->getParameter('kernel.root_dir').'/../'
+            );
+        } else {
+            $container->setParameter(
+                $this->getAlias().'.target_dir',
+                $config['target_dir']
+            );
+        }
+
+        if (true === $config['monolog_channel']) {
+            $container->setParameter($this->getAlias().'.monolog_channel', true);
+        }
     }
 
     private function isDefault($dir)
